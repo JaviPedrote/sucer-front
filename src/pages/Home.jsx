@@ -1,19 +1,24 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { Link } from 'react-router-dom';
 
 export default function Home() {
-  const { logoutUser, user } = useContext(AuthContext);
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-      <h1 className="text-3xl font-bold">Home (privada)</h1>
-      <p className="text-lg">Usuario: {user.email}</p>
-      <button
-        onClick={logoutUser}
-        className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
-      >
-        Cerrar sesión
-      </button>
+    <div className="bg-gray-50 p-8 rounded-lg shadow">
+      <h1 className="text-4xl font-bold mb-4">Bienvenido a Sucer</h1>
+      <p className="text-gray-600 mb-6">Tu tablón digital educativo.</p>
+      <div className="flex space-x-4">
+        <Link
+          to="/anuncios"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Ver Anuncios
+        </Link>
+        <Link
+          to="/dashboard"
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Ir al Dashboard
+        </Link>
+      </div>
     </div>
   );
 }
