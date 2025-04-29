@@ -1,98 +1,83 @@
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginWithPasswordGrant } from "../api/axios";
-import { AuthContext } from "../context/AuthContext";
-import logo from "../assets/images/logo.webp"; // Importa tu logo aquí
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginWithPasswordGrant } from '../services/axios';
+import { AuthContext } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
+import logo from '../assets/images/logo.webp';
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { user, loginUser } = useContext(AuthContext);
 
   useEffect(() => {
-    if (user) {
-      navigate("/home", { replace: true });
-    }
+    if (user) navigate('/home', { replace: true });
   }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await loginWithPasswordGrant({ email, password });
-      console.log("clave valida");
-      localStorage.setItem("access_token", data.access_token);
+      const {data}  = await loginWithPasswordGrant( {email, password });
+      console.log('data',data);
+      sessionStorage.setItem('access_token', data.access_token);
       loginUser(email);
-    } catch (error) {
-      console.log("clave incorrecta");
-      console.error("Error al iniciar sesión:", error);
-
+    } catch (err) {
+      toast.error('Correo o contraseña incorrectos');
+      console.error(err);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-900 to-primary-700 p-4">
-
-      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+      <motion.div
+        className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="text-center mb-6">
-          <div className="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-3">
-            <img src={logo} alt='logo' className="rounded-2xl" />
-          </div>
-          <p className="text-primary-900">Tablón de anuncios para tu centro educativo</p>
+          <img src={logo} alt="logo" className="mx-auto w-24 h-24 rounded-2xl mb-4" />
+          <p className="text-primary-900 font-medium">Tablón de anuncios para tu centro educativo</p>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-primary-900">
-              Correo electrónico
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium text-primary-900">Correo electrónico</label>
             <input
               id="email"
               type="email"
               placeholder="email@ejemplo.com"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary-800"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               required
             />
           </div>
-
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-primary-900">
-              Contraseña
-            </label>
+            <label htmlFor="password" className="block text-sm font-medium text-primary-900">Contraseña</label>
             <input
               id="password"
               type="password"
               placeholder="••••••••"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary-800"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               required
             />
           </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <a href="#" className="text-primary-900 hover:underline">
-              ¿Olvidaste tu contraseña?
-            </a>
+          <div className="flex justify-between text-sm">
+            <a href="#" className="text-secondary-900 hover:underline">¿Olvidaste tu contraseña?</a>
           </div>
-
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-primary-900 to-primary-700 text-secondary-900 font-semibold hover:outline-2 hover:ring-secondary-900 transition cursor-pointer"
-          >
-            Entrar
-          </button>
+            className="w-full py-3 bg-gradient-to-r hover:bg-gradient-to-l from-primary-900 to-primary-700 text-secondary-900 rounded-lg font-semibold hover:cursor-pointer  transition"
+          >Entrar</button>
         </form>
-
-        <p className="mt-6 text-center text-sm text-gray-600">
-          ¿Eres nuevo en sucer?{' '}
-          <a href="#" className="text-primary-900 hover:underline">
-            Regístrate aquí
-          </a>
+        <p className="mt-6 text-center text-gray-600 text-sm">
+          ¿Eres nuevo en Sucer? <a href="#" className="text-primary-900 hover:underline">Regístrate aquí</a>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

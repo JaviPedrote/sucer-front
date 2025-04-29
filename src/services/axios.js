@@ -9,6 +9,10 @@ export const api = axios.create({
 });
 
 export const loginWithPasswordGrant = async ({ email, password }) => {
+
+  console.log("email", email);
+  console.log("password", password);
+  
   const payload = {
     grant_type: "password",
     client_id: import.meta.env.VITE_CLIENT_ID,
@@ -16,5 +20,6 @@ export const loginWithPasswordGrant = async ({ email, password }) => {
     username: email,
     password,
   };
+  console.log("payload", payload);
   return api.post("/oauth/token", payload);
 };
