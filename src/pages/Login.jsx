@@ -1,31 +1,32 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginWithPasswordGrant } from '../services/axios';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import logo from '../assets/images/logo.webp';
+import { loginWithCredentials } from '../services/axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const { user, loginUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (user) navigate('/home', { replace: true });
   }, [user, navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const {data}  = await loginWithPasswordGrant( {email, password });
-      console.log('data',data);
-      sessionStorage.setItem('access_token', data.access_token);
-      loginUser(email);
+      const user = await loginWithCredentials({ email, password });
+      loginUser(user);
+      navigate('/dashboard');
     } catch (err) {
-      toast.error('Correo o contraseña incorrectos');
-      console.error(err);
+      toast.error(err?.response?.data?.message || 'Error al iniciar sesión')
+      setError(err?.response?.data?.message);
+      console.error('Error al iniciar sesión:', err.response?.data?.message);
     }
   };
 

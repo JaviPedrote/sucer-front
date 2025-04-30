@@ -8,10 +8,11 @@ export function AuthProvider({ children }) {
     return stored ? JSON.parse(stored) : null;
   });
 
-  const loginUser = (email) => {
-    const usr = { email };
-    setUser(usr);
-    sessionStorage.setItem("user", JSON.stringify(usr));
+  const loginUser = (data) => {
+    console.log("Login user", data);
+    const user = data
+    setUser(user);
+    sessionStorage.setItem("user", JSON.stringify(user));
   };
 
   const logoutUser = () => {

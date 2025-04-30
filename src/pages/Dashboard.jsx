@@ -62,6 +62,8 @@ export function Dashboard() {
           >
             <h3 className="text-xl font-semibold text-primary-900">{c.title}</h3>
             <p className={`mt-2 text-3xl font-bold ${c.color}`}>{c.value}</p>
+
+            
           </motion.div>
         ))}
       </div>

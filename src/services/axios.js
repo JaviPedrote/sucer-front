@@ -1,25 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
+ 
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    'Content-Type': 'application/json',
+    'Accept':       'application/json',
   },
 });
 
-export const loginWithPasswordGrant = async ({ email, password }) => {
-
-  console.log("email", email);
-  console.log("password", password);
-  
-  const payload = {
-    grant_type: "password",
-    client_id: import.meta.env.VITE_CLIENT_ID,
-    client_secret: import.meta.env.VITE_CLIENT_SECRET,
-    username: email,
-    password,
-  };
-  console.log("payload", payload);
-  return api.post("/oauth/token", payload);
-};
+export async function loginWithCredentials({ email, password }) {
+  const { data } = await api.post('api/v1/login', { email, password });
+  console.log('Login response:', data);
+  localStorage.setItem('token', data.token);
+  api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+  return data.user;
+}

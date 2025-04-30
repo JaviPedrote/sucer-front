@@ -5,18 +5,18 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { IoCloseOutline } from "react-icons/io5";
 import 'react-toastify/dist/ReactToastify.css';
-
-
 import { motion } from 'framer-motion';
 import { ToastContainer } from 'react-toastify';
 
 export default function Layout() {
   const { logoutUser, user } = useContext(AuthContext);
+
+  console.log(user.name)
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-300 to-primary-200">
-   
+
       <nav className="bg-white shadow-md w-full ">
         <div className="px-6 py-4 flex justify-between items-center">
           <Link to="/home" className="text-2xl font-extrabold text-primary-900">Sucer</Link>
@@ -70,23 +70,23 @@ export default function Layout() {
               >
                 <Dialog.Panel className="absolute space-y-2 top-16 right-4 md:top-13 md:right-16 w-full max-w-40 md:max-w-55 transform overflow-hidden rounded border border-primary-100 bg-white pb-3 px-5 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 ">
-                    {/* {user?.name || 'Javi'} */}
+                    {user?.name }
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
                       Hola, {user?.name || 'Javier'}
                     </p>
                   </div>
-                  <button onClick={()=>setMobileOpen(false)} className="w-full py-2 bg-primary-900 text-secondary-900 font-bold rounded-lg hover:bg-secondary-900 hover:text-primary-800 transition">
-                    <Link to="/dashboard">
+                  <Link to="/dashboard" onClick={() => setMobileOpen(false)} className='w-full'>
+                    <div className="w-full py-2 bg-primary-900 text-secondary-900 font-bold rounded-lg hover:bg-secondary-900 hover:text-primary-800 transition mb-2 text-center">
                       Dashboard
-                    </Link>
-                  </button>
-                  <button onClick={()=>setMobileOpen(false)} className="w-full py-2 bg-primary-900 text-secondary-900 font-bold rounded-lg hover:bg-secondary-900 hover:text-primary-800 transition">
-                    <Link to="/anuncios">
+                    </div>
+                  </Link>
+                  <Link to="/anuncios" onClick={() => setMobileOpen(false)} className='w-full'>
+                    <div className="w-full py-2 bg-primary-900 text-secondary-900 font-bold rounded-lg hover:bg-secondary-900 hover:text-primary-800 transition mb-2 text-center">
                       Anuncios
-                    </Link>
-                  </button>
+                    </div>
+                  </Link>
                   <button
                     onClick={() => { logoutUser(); setMobileOpen(false); }}
                     className="w-full py-2 bg-red-600 text-white rounded-lg font-bold hover:bg-white hover:text-red-600 hover:outline transition cursor-pointer"
