@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -15,14 +15,17 @@ export function AuthProvider({ children }) {
     sessionStorage.setItem("user", JSON.stringify(user));
   };
 
-  const logoutUser = () => {
+  const logoutUser = useCallback(() => {
+
     setUser(null);
+    
     sessionStorage.removeItem("user");
-    sessionStorage.removeItem("access_token");
-  };
+    sessionStorage.removeItem("token");
+  }, []);
+  
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user,setUser, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

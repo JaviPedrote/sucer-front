@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import logo from '../assets/images/logo.webp';
-import { loginWithCredentials } from '../services/axios';
+import { login } from '../services/authServices';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -19,15 +19,17 @@ export default function Login() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      const user = await loginWithCredentials({ email, password });
-      loginUser(user);
-      navigate('/dashboard');
-    } catch (err) {
-      toast.error(err?.response?.data?.message || 'Error al iniciar sesión')
-      setError(err?.response?.data?.message);
-      console.error('Error al iniciar sesión:', err.response?.data?.message);
-    }
+      try {
+        const user = await login({ email, password });
+        loginUser(user);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Error:', error);
+        setError(error.response.data.message);
+        toast.error(error.response.data.message,);
+        
+      }
+    
   };
 
   return (
@@ -51,6 +53,7 @@ export default function Login() {
               placeholder="email@ejemplo.com"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
               value={email}
+              autoComplete='email'
               onChange={e => setEmail(e.target.value)}
               required
             />
@@ -60,10 +63,11 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Escriba su contraseña"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
               value={password}
               onChange={e => setPassword(e.target.value)}
+              autoComplete='current-password'
               required
             />
           </div>
