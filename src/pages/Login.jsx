@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import logo from '../assets/images/logo.webp';
-import { login } from '../services/authServices';
+import { handlelogin } from '../services/authServices';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,9 +20,9 @@ export default function Login() {
   const handleSubmit = async e => {
     e.preventDefault();
       try {
-        const user = await login({ email, password });
+        const user = await handlelogin({ email, password });
         loginUser(user);
-        navigate('/dashboard');
+        navigate('/home');
       } catch (error) {
         console.error('Error:', error);
         setError(error.response.data.message);
@@ -39,6 +39,7 @@ export default function Login() {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
+
       >
         <div className="text-center mb-6">
           <img src={logo} alt="logo" className="mx-auto w-24 h-24 rounded-2xl mb-4" />

@@ -9,43 +9,10 @@ import { motion } from 'framer-motion';
 import { ToastContainer } from 'react-toastify';
 
 export default function Layout() {
-  const { user,setUser } = useContext(AuthContext);
+  const { user,logoutUser} = useContext(AuthContext);
 
  
-  const logoutUser = useCallback(() => {
-    setUser(null);
-    sessionStorage.clear();
-  }, []);
-
-  // 2) Efecto para “escuchar” cambios en React (user) o en el storage de otras pestañas
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-
-    if (!user || !token) {
-      logoutUser();
-    }
-    // Manejador para storage events (sólo salta en OTRAS pestañas de tu app)
-    const onStorageChange = (e) => {
-      if (e.key === 'user' && e.newValue === null) {
-        // Alguien borró `user` manualmente (o con clear) en otra pestaña
-        logoutUser();
-      }
-      if (e.key === 'token' && e.newValue === null) {
-        // Igual para el token
-        logoutUser();
-      }
-    };
-
-    // Escucha el evento de storage
-    window.addEventListener('storage', onStorageChange);
-    // Limpia el listener al desmontar el componente
-    return () => {
-      window.removeEventListener('storage', onStorageChange);
-    };
-  }, [user, logoutUser]);
-
-
-
+ 
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
@@ -92,7 +59,7 @@ export default function Layout() {
             </Transition.Child>
 
             <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center ">
+              <div className="flex min-h-full items-center justify-center p-4 text-center border">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-out duration-300"
@@ -102,10 +69,8 @@ export default function Layout() {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="absolute space-y-2 top-16 right-4 md:top-13 md:right-16 w-full max-w-40 md:max-w-55 transform overflow-hidden rounded border border-primary-100 bg-white pb-3 px-5 text-left align-middle shadow-xl transition-all">
-                    <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 ">
-                      {user?.name}
-                    </Dialog.Title>
+                  <Dialog.Panel className="absolute space-y-2 top-15 right-4 md:top-13 md:right-16 w-full max-w-40 md:max-w-55 transform overflow-hidden rounded border border-primary-100 bg-white pb-3 px-5 text-left align-middle shadow-xl transition-all">
+                    
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         Hola, {user?.name || 'Javier'}
