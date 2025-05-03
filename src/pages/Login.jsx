@@ -5,85 +5,122 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import logo from '../assets/images/logo.webp';
 import { handlelogin } from '../services/authServices';
+import {ThemeToggle} from '../components/ThemeToogle';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading]   = useState(false);
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
   const { user, loginUser } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (user) navigate('/home', { replace: true });
-  }, [user, navigate]);
+  /* redirect if already logged */
+  useEffect(() => { if (user) navigate('/home', { replace: true }); }, [user]);
 
-  const handleSubmit = async e => {
+  async function handleSubmit(e) {
     e.preventDefault();
-      try {
-        const user = await handlelogin({ email, password });
-        loginUser(user);
-        navigate('/home');
-      } catch (error) {
-        console.error('Error:', error);
-        setError(error.response.data.message);
-        toast.error(error.response.data.message,);
-        
-      }
-    
-  };
+    setLoading(true);
+    try {
+      const u = await handlelogin({ email, password });
+      loginUser(u);
+      navigate('/home');
+    } catch (err) {
+      toast.error(err?.response?.data?.message ?? 'Credenciales incorrectas');
+    } finally { setLoading(false); }
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-900 to-primary-700 p-4">
-      <motion.div
-        className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+    /* ------------------------------------ Fondo global ------------------------------------ */
+    <main className="
+        grid min-h-screen place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
+        dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-900
+      ">
 
+      {/* “Panel” diagonal – solo en claro */}
+      <div aria-hidden
+           className="pointer-events-none fixed inset-y-0 left-0 w-1/2 origin-top-left -skew-x-12
+                      shadow-xl blur-sm
+                      hidden lg:block dark:hidden" />
+
+    
+      <motion.section
+        className="
+          relative z-10 mx-auto w-full max-w-lg overflow-hidden rounded-3xl shadow-2xl
+          ring-1 ring-secondary-200/70 dark:ring-white/10
+          bg-secondary-50/90 backdrop-blur-md bg-gradient-to-br from-secondary-100 via-secondary-50 to-white
+            dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-800
+        "
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: .45 }}
       >
-        <div className="text-center mb-6">
-          <img src={logo} alt="logo" className="mx-auto w-24 h-24 rounded-2xl mb-4" />
-          <p className="text-primary-900 font-medium">Tablón de anuncios para tu centro educativo</p>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-primary-900">Correo electrónico</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="email@ejemplo.com"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
-              value={email}
-              autoComplete='email'
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
+        {/* Cabeza de color (solo claro) */}
+        <header className="
+            flex flex-col items-center gap-3 px-10 pb-8 pt-10
+            
+          ">
+              <ThemeToggle className='absolute right-5 top-5 ' />
+          <img src={logo} alt="Sucer" className="h-20 w-20 rounded-2xl shadow" />
+          <p className="max-w-xs text-center text-sm text-slate-600 dark:text-slate-300">
+            Tablón de anuncios para tu centro educativo
+          </p>
+        </header>
+
+        {/* ------------------------------------ Formulario ------------------------------------ */}
+        <form onSubmit={handleSubmit} className="space-y-6 px-10 pb-10 pt-8">
+          <Field
+            id="email" type="email" label="Correo electrónico"
+            value={email} onChange={setEmail} placeholder="email@ejemplo.com"
+          />
+          <Field
+            id="password" type="password" label="Contraseña"
+            value={password} onChange={setPassword} placeholder="********"
+          />
+
+          <div className="flex justify-end text-xs">
+            <a href="#" className="text-brand-600 hover:underline dark:text-amber-400">
+              ¿Olvidaste tu contraseña?
+            </a>
           </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-primary-900">Contraseña</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Escriba su contraseña"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-800"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              autoComplete='current-password'
-              required
-            />
-          </div>
-          <div className="flex justify-between text-sm">
-            <a href="#" className="text-secondary-900 hover:underline">¿Olvidaste tu contraseña?</a>
-          </div>
+
           <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r hover:bg-gradient-to-l from-primary-900 to-primary-700 text-secondary-900 rounded-lg font-semibold hover:cursor-pointer  transition"
-          >Entrar</button>
+            type="submit" disabled={loading}
+            className="
+              w-full rounded-lg bg-secondary-500 hover:bg-secondary-400 py-3 text-primary-700 font-semibold dark:text-white shadow-md transition
+              active:scale-95 disabled:opacity-60 dark:bg-amber-500 dark:hover:bg-amber-600
+            ">
+            {loading ? 'Iniciando sesion...' : 'Entrar'}
+          </button>
+
+          <p className="pt-4 text-center text-xs text-slate-500 dark:text-slate-400">
+            ¿Eres nuevo en Sucer?&nbsp;
+            <a href="#" className="font-medium text-brand-600 hover:underline dark:text-amber-400">
+              Regístrate aquí
+            </a>
+          </p>
         </form>
-        <p className="mt-6 text-center text-gray-600 text-sm">
-          ¿Eres nuevo en Sucer? <a href="#" className="text-primary-900 hover:underline">Regístrate aquí</a>
-        </p>
-      </motion.div>
+      </motion.section>
+    </main>
+  );
+}
+
+/* ---------- Campo input reutilizable ---------- */
+function Field({ id, label, type, placeholder, value, onChange }) {
+  return (
+    <div className="space-y-1">
+      <label htmlFor={id} className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        {label}
+      </label>
+      <input
+        id={id} type={type} required placeholder={placeholder}
+        autoComplete={type === 'password' ? 'current-password' : 'email'}
+        value={value} onChange={e => onChange(e.target.value)}
+        className="
+          w-full rounded-lg border border-secondary-200 bg-white/70 px-4 py-2
+          shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-secondary-400
+          dark:border-slate-600 dark:bg-slate-200 dark:text-white dark:placeholder:text-slate-500
+        "
+      />
     </div>
   );
 }

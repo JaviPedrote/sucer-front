@@ -1,5 +1,18 @@
+
 @import "tailwindcss";
 
+@layer utilities {
+    @keyframes wipe-x {
+      100%   { -webkit-mask-position:-50% 0%; mask-position:-50% 0%; }
+      0% { -webkit-mask-position:150% 0%; mask-position:150% 0%; }
+    }
+    .animate-wipe-x {
+      animation: wipe-x 3s linear infinite;
+    }
+  }
+
+/* Closing @layer theme block */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --color-primary-900: #041d3d;
@@ -24,3 +37,4 @@
     --color-secondary-100: #fefdfd;
     --color-secondary-50: #fefefe;
 }
+

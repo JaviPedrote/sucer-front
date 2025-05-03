@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Login from '../pages/Login';
-import {Home} from '../pages/Home';
-import {Dashboard} from '../pages/Dashboard';
+import { Home } from '../pages/Home';
+import { Dashboard } from '../pages/Dashboard';
 import Layout from '../layout/Layout';
-import {Anuncios} from '../pages/Anuncios';
+import { Anuncios } from '../pages/Anuncios';
 
 function PrivateRoute({ children }) {
   const { user } = useContext(AuthContext);
@@ -18,15 +18,15 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/" element={
-            <PrivateRoute>
-              <Layout />
-            </PrivateRoute>
-          }
+          <PrivateRoute>
+            <Layout />
+          </PrivateRoute>
+        }
         >
           <Route path="home" element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="anuncios" element={<Anuncios />} />
-  
+
         </Route>
       </Routes>
     </BrowserRouter>

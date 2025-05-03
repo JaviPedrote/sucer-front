@@ -1,8 +1,12 @@
-import { createContext, useCallback, useState,useEffect } from "react";
+import { createContext, useCallback, useState, useEffect } from "react";
+import { api } from "../services/axios";
 
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+
   const [user, setUser] = useState(() => {
     const stored = sessionStorage.getItem("user");
     return stored ? JSON.parse(stored) : null;
@@ -10,12 +14,21 @@ export function AuthProvider({ children }) {
 
   const logoutUser = useCallback(() => {
     setUser(null);
-    sessionStorage.clear();
-  }, []);
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    delete api.defaults.headers.common["Authorization"];
+    delete api.defaults.headers.common["Accept"];
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api]);
 
   // 2) Efecto para “escuchar” cambios en React (user) o en el storage de otras pestañas
   useEffect(() => {
     const token = sessionStorage.getItem('token');
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Accept'] = 'application/json';
+    }
 
     if (!user || !token) {
       logoutUser();
@@ -39,17 +52,17 @@ export function AuthProvider({ children }) {
       window.removeEventListener('storage', onStorageChange);
     };
   }, [user, logoutUser]);
-  
+
   const loginUser = (data) => {
     console.log("Login user", data);
     const user = data
     setUser(user);
     sessionStorage.setItem("user", JSON.stringify(user.name));
   };
-  
+
 
   return (
-    <AuthContext.Provider value={{ user,setUser, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, setUser, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );
