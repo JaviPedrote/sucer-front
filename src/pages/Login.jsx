@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import logo from '../assets/images/logo.webp';
 import { handlelogin } from '../services/authServices';
-import {ThemeToggle} from '../components/ThemeToogle';
+import { ThemeToggle } from '../components/ThemeToogle';
 
 export default function Login() {
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user, loginUser } = useContext(AuthContext);
 
@@ -32,17 +32,17 @@ export default function Login() {
   return (
     /* ------------------------------------ Fondo global ------------------------------------ */
     <main className="
-        grid min-h-screen place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
+        grid min-h-screen -mt-8 sm:mt-0 place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
         dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-900
       ">
 
       {/* “Panel” diagonal – solo en claro */}
       <div aria-hidden
-           className="pointer-events-none fixed inset-y-0 left-0 w-1/2 origin-top-left -skew-x-12
+        className="pointer-events-none fixed inset-y-0 left-0 w-1/2 origin-top-left -skew-x-12
                       shadow-xl blur-sm
                       hidden lg:block dark:hidden" />
 
-    
+
       <motion.section
         className="
           relative z-10 mx-auto w-full max-w-lg overflow-hidden rounded-3xl shadow-2xl
@@ -56,10 +56,10 @@ export default function Login() {
       >
         {/* Cabeza de color (solo claro) */}
         <header className="
-            flex flex-col items-center gap-3 px-10 pb-8 pt-10
+            flex flex-col items-center gap-3 px-10 pb-0 sm:pb-8 pt-10
             
           ">
-              <ThemeToggle className='absolute right-5 top-5 ' />
+          <ThemeToggle className='absolute right-5 top-5 ' />
           <img src={logo} alt="Sucer" className="h-20 w-20 rounded-2xl shadow" />
           <p className="max-w-xs text-center text-sm text-slate-600 dark:text-slate-300">
             Tablón de anuncios para tu centro educativo
@@ -67,11 +67,16 @@ export default function Login() {
         </header>
 
         {/* ------------------------------------ Formulario ------------------------------------ */}
+        {/* //todo:Porque las letras del inpus soin blancas en el modo oscuro */}
         <form onSubmit={handleSubmit} className="space-y-6 px-10 pb-10 pt-8">
+        
+
           <Field
             id="email" type="email" label="Correo electrónico"
             value={email} onChange={setEmail} placeholder="email@ejemplo.com"
-          />
+            autoComplete="email"
+            />
+          
           <Field
             id="password" type="password" label="Contraseña"
             value={password} onChange={setPassword} placeholder="********"
@@ -118,7 +123,7 @@ function Field({ id, label, type, placeholder, value, onChange }) {
         className="
           w-full rounded-lg border border-secondary-200 bg-white/70 px-4 py-2
           shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-secondary-400
-          dark:border-slate-600 dark:bg-slate-200 dark:text-white dark:placeholder:text-slate-500
+          dark:border-slate-600 dark:bg-slate-200 dark:text-primary-800 dark:placeholder:text-slate-500
         "
       />
     </div>

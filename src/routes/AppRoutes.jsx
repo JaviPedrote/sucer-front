@@ -24,7 +24,9 @@ export default function AppRoutes() {
         }
         >
           <Route path="home" element={<Home />} />
+        
           <Route path="dashboard" element={<Dashboard />} />
+
           <Route path="anuncios" element={<Anuncios />} />
 
         </Route>

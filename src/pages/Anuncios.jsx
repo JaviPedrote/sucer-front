@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState, memo } from 'react';
+import { Fragment, useState, } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { getPosts } from '../services/postServices';
+import { usePosts } from '../hooks/usePosts';
 
 const categories = {
   all: { id: null, name: 'Todas', badge: 'bg-slate-200 text-slate-700' },
@@ -15,34 +15,17 @@ const categories = {
 
 export function Anuncios() {
   const [selected, setSelected] = useState(categories.all);
-  const [anuncios, setAnuncios] = useState([]);
-  // const anuncios = [
-  //   { id: 1, title: 'Examen Matemáticas', content: 'Examen de matemáticas el próximo viernes.', urgent: false, category_id: 1 },
-  //   { id: 2, title: 'Entrega de Tareas', content: 'Fecha límite para entregar tareas de historia.', urgent: false, category_id: 2 },
-  //   { id: 3, title: 'Reunión Padres', content: 'Reunión de padres se celebrará el lunes.', urgent: true, category_id: 3 },
-  //   { id: 4, title: 'Actualización Reglamento', content: 'Nuevas normas de comportamiento escolar.', urgent: false, category_id: 4 },
-  //   { id: 5, title: 'Examen Física', content: 'Examen de física el miércoles.', urgent: true, category_id: 1 },
-  //   { id: 6, title: 'Tarea Matemáticas', content: 'Resolver ejercicios del 5 al 10.', urgent: false, category_id: 2 },
-  //   { id: 7, title: 'Charla Padres', content: 'Invitación a charla sobre hábitos de estudio.', urgent: false, category_id: 3 },
-  //   { id: 8, title: 'Administración Horarios', content: 'Cambio de horario de secretaría.', urgent: false, category_id: 4 },
-  //   { id: 9, title: 'Examen Inglés', content: 'Practicar vocabulario para examen.', urgent: false, category_id: 1 },
-  //   { id: 10, title: 'Entrega Proyecto', content: 'Fecha de entrega del proyecto final.', urgent: true, category_id: 2 },
-  // ];
+ 
 
+  const { data , error, isLoading } = usePosts();
 
+console.log('Anuncios', data, error, isLoading);
 
+  // data viene directamente como array (no data.data)
+  const anuncios = data?.data ?? []
 
-
-  /* Ejemplo de llamada a la API */
-  useEffect(() => {
-    (async () => {
-      const res = await getPosts();
-      console.log(res?.data);
-      setAnuncios(res?.data);
-    })();
-  }, [anuncios]);
-
-  const filtered = anuncios.filter(
+ 
+  const filtered = anuncios?.filter(
     a => selected.id === null || a.category_id === selected.id
   );
 
@@ -60,7 +43,7 @@ export function Anuncios() {
           <div className="relative w-56">
             <Listbox.Button className="w-full rounded-lg border bg-white py-2 pl-3 pr-10 text-left shadow-sm
                                        focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-slate-800">
-              <span className="block truncate text-white">{selected.name}</span>
+              <span className="block truncate  dark:text-white">{selected.name}</span>
             </Listbox.Button>
 
             <Transition
@@ -92,7 +75,7 @@ export function Anuncios() {
 
       {/* Grid de anuncios */}
       <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map(a => {
+        {filtered?.map(a => {
           const cat = categories[a.category_id];
           return (
             <motion.li

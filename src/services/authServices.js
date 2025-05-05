@@ -3,7 +3,7 @@ import { api } from "./axios";
 
 export async function handlelogin({ email, password }) {
   try {
-    const { data } = await api.post("api/v1/login", { email, password });
+    const { data } = await api.post("/login", { email, password });
     const token = data.access_token;
 
   

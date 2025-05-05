@@ -52,7 +52,7 @@ export function Home() {
           [mask-size:200%_100%] [-webkit-mask-size:200%_100%] animate-wipe-x text-5xl font-extrabold">
 
 
-          ¡Hola, {user}! Bienvenido a&nbsp; Sucer
+          ¡Hola, {user.name}! Bienvenido a&nbsp; Sucer
 
         </h1>
 
@@ -60,7 +60,7 @@ export function Home() {
           El tablón digital que conecta estudiantes, profesorado y familias en un solo lugar.
         </p>
 
-        {/* CTA buttons */}
+      
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <PrimaryButton as={Link} to="/anuncios">
             Ver anuncios
