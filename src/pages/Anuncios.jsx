@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { usePosts } from '../hooks/usePosts';
 
 const categories = {
-  all: { id: null, name: 'Todas', badge: 'bg-slate-200 text-slate-700' },
+  0: { id: null, name: 'Todas', badge: 'bg-slate-200 text-slate-700' },
   1: { id: 1, name: 'amet', badge: 'bg-blue-100 text-blue-700' },
   2: { id: 2, name: 'voluptas', badge: 'bg-amber-100 text-amber-700' },
   3: { id: 3, name: 'qui', badge: 'bg-emerald-100 text-emerald-700' },
@@ -14,7 +14,7 @@ const categories = {
 
 
 export function Anuncios() {
-  const [selected, setSelected] = useState(categories.all);
+  const [selected, setSelected] = useState(categories[0]);
   const { data, error, isLoading } = usePosts();
 
 

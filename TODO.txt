@@ -1,4 +1,3 @@
 
-Dashboard componente post y botonera cambio componente
-botones tablas editar y borrar mas grandes
+Componentes gestionar post y ver su funcionamiento.
 cambiar color dasboard,pequeño color claro y mas md oscuro

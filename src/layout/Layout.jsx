@@ -46,7 +46,7 @@ export default function Layout() {
                     {l.name}
                   </Link>
                 ))}
-                <ThemeToggle />
+                <ThemeToggle  />
                 <button
                   onClick={logoutUser}
                   className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-700 focus-visible:outline-red-600"
@@ -126,7 +126,7 @@ function MobileNav({ navLinks, pathname, logoutUser,closeMobileNav }) {
   return (
     <div ref={navRef}  className="space-y-1 px-4 pb-4 pt-2">
       <div className="flex items-center gap-2">
-        <ThemeToggle className="w-10 h-10" />
+        <ThemeToggle closeMobileNav={closeMobileNav} className="w-10 h-10" />
         {navLinks.map(l => (
           <Link
             key={l.name}

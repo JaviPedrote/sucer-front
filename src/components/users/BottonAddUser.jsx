@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
+import { AiOutlineUserAdd } from "react-icons/ai";
+
 
 const ButtonAddUser = memo(({ newUser }) => (
-  <button onClick={newUser} className="flex items-center justify-center rounded-full bg-blue-600 w-8 h-8 text-white shadow-lg hover:bg-blue-700">
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 4v16m8-8H4" />
-    </svg>
-    <span className="sr-only">Agregar usuario</span>
+  <button onClick={newUser} className="cursor-pointer flex items-center justify-center rounded-lg bg-gradient-to-b from-amber-500 to-amber-600  dark:from-amber-200 dark:to-amber-400  dark:text-black text-white font-medium h-8 w-8 hover:bg-gradient-to-t transition-colors">
+    <AiOutlineUserAdd  className=''/>
   </button>
 ));
 
