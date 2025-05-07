@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Login from '../pages/Login';
 import { Home } from '../pages/Home';
-import { Dashboard } from '../pages/Dashboard';
+import  Dashboard  from '../pages/Dashboard';
 import Layout from '../layout/Layout';
 import { Anuncios } from '../pages/Anuncios';
 

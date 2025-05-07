@@ -52,7 +52,7 @@ import {
   
     return useMutation({
       mutationFn: ({ id, data }) => {
-        console.log('id', id, data);
+       
         return updateUser(id, data);
       },
       // recibe un objeto con id y dat

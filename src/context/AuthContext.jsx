@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
   }, [user, logoutUser]);
 
   const loginUser = (data) => {
-    console.log("Login user", data);
+  
     const user = data
     setUser(user);
     sessionStorage.setItem("user", JSON.stringify(user));

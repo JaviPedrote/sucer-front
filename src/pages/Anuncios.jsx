@@ -6,35 +6,33 @@ import { usePosts } from '../hooks/usePosts';
 
 const categories = {
   all: { id: null, name: 'Todas', badge: 'bg-slate-200 text-slate-700' },
-  1: { id: 1, name: 'Exámenes', badge: 'bg-blue-100 text-blue-700' },
-  2: { id: 2, name: 'Tareas', badge: 'bg-amber-100 text-amber-700' },
-  3: { id: 3, name: 'Padres', badge: 'bg-emerald-100 text-emerald-700' },
-  4: { id: 4, name: 'Administración', badge: 'bg-purple-100 text-purple-700' },
+  1: { id: 1, name: 'amet', badge: 'bg-blue-100 text-blue-700' },
+  2: { id: 2, name: 'voluptas', badge: 'bg-amber-100 text-amber-700' },
+  3: { id: 3, name: 'qui', badge: 'bg-emerald-100 text-emerald-700' },
+  4: { id: 4, name: 'ipsan', badge: 'bg-purple-100 text-purple-700' },
 };
 
 
 export function Anuncios() {
   const [selected, setSelected] = useState(categories.all);
- 
+  const { data, error, isLoading } = usePosts();
 
-  const { data , error, isLoading } = usePosts();
 
-console.log('Anuncios', data, error, isLoading);
 
   // data viene directamente como array (no data.data)
   const anuncios = data?.data ?? []
 
- 
+
   const filtered = anuncios?.filter(
-    a => selected.id === null || a.category_id === selected.id
+    a => selected.id === null || a.category.id === selected.id
   );
 
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10">
-      {/* Header + filtro */}
-      <header className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl font-extrabold text-primary-900 dark:text-white">
+    <section className="mx-auto max-w-7xl px-5 py-10 mt-4 md:mt-0 space-y-6 md:space-y-10">
+     
+      <header className="mb-10 flex flex-col md:flex-row items-center justify-between">
+        <h1 className="text-3xl font-bold text-primary-900 dark:text-white mb-6 md:mb-0">
           Anuncios
         </h1>
 
@@ -42,8 +40,8 @@ console.log('Anuncios', data, error, isLoading);
         <Listbox value={selected} onChange={setSelected}>
           <div className="relative w-56">
             <Listbox.Button className="w-full rounded-lg border bg-white py-2 pl-3 pr-10 text-left shadow-sm
-                                       focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-slate-800">
-              <span className="block truncate  dark:text-white">{selected.name}</span>
+                                       focus:outline-none focus:ring-brand-500 dark:bg-slate-800">
+              <span className="block truncate  dark:text-white">{selected?.name}</span>
             </Listbox.Button>
 
             <Transition
@@ -76,7 +74,7 @@ console.log('Anuncios', data, error, isLoading);
       {/* Grid de anuncios */}
       <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {filtered?.map(a => {
-          const cat = categories[a.category_id];
+          const cat = categories[a.category.id];
           return (
             <motion.li
               key={a.id}
@@ -84,8 +82,7 @@ console.log('Anuncios', data, error, isLoading);
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="cursor-pointer rounded-2xl border border-transparent bg-white p-6 shadow-sm bg-gradient-to-b
-                         dark:from-slate-800 dark:to-slate-900 dark:bg-slate-800/50"
+              className="cursor-pointer rounded-xl md:rounded-3xl bg-white pl-5 py-3 md:px-6 md:py-6 bg-gradient-to-tl shadow-2xl from-white to-secondary-100 dark:from-slate-800  dark:to-slate-700 md:dark:to-slate-800 dark:bg-slate-800/50 outline outline-amber-600/40 dark:outline-primary-700"
               onClick={() => a.urgent && toast.warn('¡Este anuncio es urgente!')}
             >
               <div className="flex items-start justify-between gap-2">
