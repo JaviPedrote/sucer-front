@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { ChartBarIcon, StarIcon, TagIcon } from '@heroicons/react/24/outline';
@@ -13,6 +13,7 @@ import { PostCard } from '../components/post/PostCard';
 import SheetPost from '../components/post/SheetPost';
 import { getCategories } from '../services/categoriesServices';
 import { MdPostAdd } from "react-icons/md";
+import { AuthContext } from '../context/AuthContext';
 
 
 export default function Dashboard() {
@@ -23,10 +24,15 @@ export default function Dashboard() {
   const [modalSheetOpen, setModalSheetOpen] = useState(false);
   const [sheetNewPost, setSheetNewPost] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [viewUsers, setViewUsers] = useState(true);
+  const [viewUsers, setViewUsers] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [modalCategories, setModalCategories] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [modalAddCategories, setModalAddCategories] = useState(false);
+
+  const { user } = useContext(AuthContext);
+  const isAdmin = user.role_id === 1;
+  const isTutor = user.role_id === 2;
 
 
   // UseEffect para manejar el scroll del body
@@ -99,14 +105,15 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchCategories() {
       const { data } = await getCategories();
-      console.log('Datos recibidos:', data);
       setCategories(data);
     }
     fetchCategories();
   }, []);
 
   const addCategories = () => {
-    console.log('Añadir categorias');
+    
+    toast.success('Categoría añadida correctamente');
+    setModalAddCategories(false);
   }
 
   const cardsUsuarios = [
@@ -129,35 +136,36 @@ export default function Dashboard() {
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-10 mt-4 md:mt-0 space-y-6 md:space-y-10">
-      <header className="mb-10 flex flex-col md:flex-row items-center justify-between">
+      <header className={`${isAdmin ? 'mb-10' : 'mb-0'} flex flex-col md:flex-row items-center justify-between`}>
         <h1 className="text-3xl font-bold text-primary-900 dark:text-white mb-6 md:mb-0">
           Dashboard
         </h1>
-        <div className="flex gap-4">
-          <button
-            className="cursor-pointer px-2 py-1 h-12 md:h-8 w-35 md:w-23 bg-gradient-to-b from-blue-500 to-blue-700 dark:from-blue-300 dark:to-blue-500 dark:text-black text-white font-medium rounded-lg hover:bg-gradient-to-t transition-colors"
-            onClick={() => setViewUsers(false)}
-          >
-            Anuncios
-          </button>
-          <button
-            className="cursor-pointer px-2 py-1 h-12 md:h-8 w-35 md:w-23 bg-gradient-to-b from-amber-500 to-amber-600  dark:from-amber-200 dark:to-amber-400  dark:text-black text-white font-medium  rounded-lg hover:bg-gradient-to-t transition-colors"
-            onClick={() => setViewUsers(true)}
-          >
-            Usuarios
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex gap-4">
+            <button
+              className="cursor-pointer px-2 py-1 h-12 md:h-8 w-35 md:w-23 bg-gradient-to-b from-blue-500 to-blue-700 dark:from-blue-300 dark:to-blue-500 dark:text-black text-white font-medium rounded-lg hover:bg-gradient-to-t transition-colors"
+              onClick={() => setViewUsers(false)}
+            >
+              Anuncios
+            </button>
+            <button
+              className="cursor-pointer px-2 py-1 h-12 md:h-8 w-35 md:w-23 bg-gradient-to-b from-amber-500 to-amber-600  dark:from-amber-200 dark:to-amber-400  dark:text-black text-white font-medium  rounded-lg hover:bg-gradient-to-t transition-colors"
+              onClick={() => setViewUsers(true)}
+            >
+              Usuarios
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Controlar vistas usuarios o anuncios */}
       {!viewUsers ? (
-
         // Anuncios
         <>
           <div className="grid gap-3 md:gap-8 grid-cols-3">
             {cardsAnuncios.map(({ title, value, icon: Icon, color }, i) => (
               <motion.div
-              key={`${title}-${i}`}
+                key={`${title}-${i}`}
                 whileHover={{ scale: 1.05 }}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -179,7 +187,7 @@ export default function Dashboard() {
             </button>
           </div>
 
-            {/* Gestion Anuncios*/}
+          {/* Gestion Anuncios*/}
           <div className="rounded-xl md:rounded-3xl p-6  bg-gradient-to-br shadow-2xl from-white via-white to-secondary-300 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 dark:bg-slate-800/50 outline outline-amber-600/40 dark:outline-primary-700">
             <h2 className="flex justify-between mb-6 text-2xl font-bold text-primary-900 dark:text-white">
               Gestión de anuncios
@@ -195,12 +203,12 @@ export default function Dashboard() {
             {/* Desktop: tabla Anuncios */}
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full text-left text-sm">
-                <thead className="bg-brand-600 text-white">
+                <thead className="bg-brand-600 text-white ">
                   <tr>
                     <th className="py-2 px-4">ID</th>
-                    <th className="py-2 px-4">Nombre</th>
-                    <th className="py-2 px-4">Email</th>
-                    <th className="py-2 px-4">Rol</th>
+                    <th className="py-2 px-4">Titulo</th>
+                    <th className="py-2 px-4">Contenido</th>
+                    <th className="py-2 px-4">Categoria</th>
                     <th className="py-2 px-4 w-3/12">Acciones</th>
                   </tr>
                 </thead>
@@ -248,7 +256,7 @@ export default function Dashboard() {
 
           </div>
         </>
-      ) :  (
+      ) : (
 
         // Gestion de usuarios
         <>
@@ -347,13 +355,13 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md px-4">
           <div className="w-full relative max-w-sm rounded-xl bg-white dark:text-primary-50 p-6 shadow-lg dark:bg-slate-800 ">
             <div className="absolute right-2 top-2">
-              <button onClick={() => setModalCategories(false)} className="rounded-lg border px-1.5 py-0.5 bg-slate-200 hover:bg-slate-50 dark:text-primary-900 dark:border-slate-400 dark:hover:bg-slate-500">X</button>
+              <button onClick={() => setModalCategories(false)} className="rounded-lg border px-1.5 bg-slate-200 hover:bg-slate-50 dark:text-primary-900 dark:border-slate-400 dark:hover:bg-slate-500 cursor-pointer">X</button>
             </div>
             <h3 className="mb-4 text-lg font-semibold">Gestionar categorias</h3>
             <div>
               <div className='flex justify-between items-center mb-4'>
-              <p className="mb-4 text-sm font-semibold">Categorias existentes</p>
-              <button onClick={addCategories} className="rounded-lg border px-1.5 py-0.5 bg-slate-200 hover:bg-slate-50 dark:text-primary-900 dark:border-slate-400 dark:hover:bg-slate-500"><MdPostAdd/></button>
+                <p className="mb-4 text-sm font-semibold">Categorias existentes</p>
+                <button onClick={() => setModalAddCategories(true)} className="rounded-lg border px-1.5 py-0.5 bg-slate-200 hover:bg-slate-50 dark:text-primary-900 dark:border-slate-400 dark:hover:bg-slate-500"><MdPostAdd /></button>
               </div>
               <ul className="space-y-2">
                 {categories.map(cat => (
@@ -368,6 +376,18 @@ export default function Dashboard() {
               </ul>
             </div>
           </div>
+          {modalAddCategories && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md px-4">
+              <div className="w-full max-w-sm rounded-xl bg-white dark:text-primary-50 p-6 shadow-lg dark:bg-slate-800 ">
+                <h3 className="mb-4 text-lg font-semibold">Añadir categoria</h3>
+                <input type="text" placeholder="Nombre de la categoria" className="w-full border border-gray-300 rounded-md p-2 mb-4" />
+                <div className='flex justify-end gap-3'>
+                  <button onClick={addCategories} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Añadir</button>
+                  <button onClick={() => setModalAddCategories(false)} className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </section>

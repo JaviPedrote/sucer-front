@@ -13,11 +13,11 @@ const navLinks = [
 ];
 
 export default function Layout() {
-  const { user, logoutUser } = useContext(AuthContext);
+  const { logoutUser } = useContext(AuthContext);
   const { pathname } = useLocation();
 
   const closeMobileNav = () => {
-    console.log('funcion mobile');
+    console.log('');
   }
 
   return (

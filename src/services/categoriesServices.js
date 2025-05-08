@@ -2,10 +2,7 @@ import { api } from "./axios";
 
 export async function getCategories() {
   try {
-    console.log('Fetching categories...');
     const { data } = await api.get('/categories');
-    console.log('Categories fetched successfully:');
-    console.log('Categories:', data);
     return data;
   } catch (error) {
     console.error('Error fetching posts:', error);

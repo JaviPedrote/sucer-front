@@ -4,9 +4,20 @@ import { toast } from 'react-toastify';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { IoClose } from 'react-icons/io5';
 import { useCreatePost, useUpdatePost } from '../../hooks/usePosts';
+import { getCategories } from '../../services/categoriesServices';
 
 const SheetPost = memo(({ sheetNewPost, post }) => {
   const [formData, setFormData] = useState({ title: '', content: '', category_id: '' });
+  const [categories, setCategories] = useState([]);
+
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await getCategories();         // ← data ya es array
+      setCategories(data);                  // anteponemos “Todas”
+    })();
+  }, []);
+
   // Hook para creación
   const createPost = useCreatePost()
 
@@ -15,7 +26,7 @@ const SheetPost = memo(({ sheetNewPost, post }) => {
 
   useEffect(() => {
     if (post) {
-      setFormData({ title: post.title, content: post.content, category_id: post.category.id});
+      setFormData({ title: post.title, content: post.content, category_id: post.category.id });
     }
     return () => setFormData({ title: '', content: '', category_id: '' });
   }, [post]);
@@ -41,7 +52,7 @@ const SheetPost = memo(({ sheetNewPost, post }) => {
     toast.info('Creando anuncio...');
   };
 
-  
+
   const handleEdit = (e) => {
     e.preventDefault();
     if (!formData.title || !formData.content || !formData.category_id) {
@@ -79,10 +90,10 @@ const SheetPost = memo(({ sheetNewPost, post }) => {
             <label htmlFor="category_id" className="block text-sm font-medium dark:text-white">Categoria</label>
             <div className="relative mt-1">
               <select id="category_id" name="category_id" value={formData.category_id} onChange={handleChange} className="w-full appearance-none rounded-md border border-gray-300 pl-2 pr-10 py-2 shadow-sm focus:ring focus:ring-opacity-50 dark:text-white">
-                <option value="" disabled hidden>Selecciona una categoría</option>
-                <option className='text-black' value="1">Examenes</option>
-                <option className='dark:text-black' value="2">Padres</option>
-                <option className='text-black' value="3">Reunion</option>
+                <option value="" disabled>Selecciona una categoria</option>
+                {categories.map(cat => (
+                  <option className='text-black' key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
               </select>
               <ChevronDownIcon className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 transform -translate-y-1/2 text-gray-400" />
             </div>

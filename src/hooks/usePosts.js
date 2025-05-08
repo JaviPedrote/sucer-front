@@ -7,15 +7,19 @@ import {
   deletePost,
   updatePost,
 } from '../services/postServices'
+import { AuthContext, AuthProvider } from '../context/AuthContext'
+import { useContext } from 'react';
 
 /**
  * Lista de posts
- */
+*/
 export function usePosts() {
+  const {user} = useContext(AuthContext);
+  
   return useQuery({
-    queryKey: ['posts'],
+    queryKey: ['posts', user?.id],
     queryFn: getPosts,
-    staleTime: 1000 * 60 * 5, // 5 minutos
+    staleTime: 30*3000, // 30 segundos
     retry: false,
   })
 }
@@ -24,8 +28,11 @@ export function usePosts() {
  * Un único post por ID
  */
 export function usePost(id) {
+
+  const {user} = useContext(AuthContext);
+
   return useQuery({
-    queryKey: ['posts', id],
+    queryKey: ['posts', user.id , id],
     queryFn: () => getPostById(id),
     enabled: Boolean(id),
     staleTime: 1000 * 60 * 2, // 2 minutos

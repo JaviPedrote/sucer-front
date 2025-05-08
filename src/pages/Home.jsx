@@ -8,17 +8,17 @@ const features = [
   {
     icon: AcademicCapIcon,
     title: 'Aprendizaje Organizado',
-    text: 'Mantén exámenes y tareas siempre a la vista para mejorar tu planificación.'
+    text: 'Exámenes y tareas siempre a la vista para mejorar tu planificación.'
   },
   {
     icon: BellAlertIcon,
-    title: 'Alertas Urgentes',
-    text: 'Notificaciones instantáneas ante anuncios importantes o cambios de última hora.'
+    title: 'Filtración de anuncios por categorias',
+    text: 'Busca los anuncios que mas te interesan: tareas, exámenes, eventos y más.'
   },
   {
     icon: ChartPieIcon,
-    title: 'Estadísticas',
-    text: 'Datos rápidos para el personal directivo: anuncios totales, categorías y destacados.'
+    title: 'Moderna interfaz de usuario',
+    text: 'Interfaz intuitiva y fácil de usar para una experiencia fluida.'
   }
 ];
 
