@@ -21,7 +21,7 @@ import {
     return useQuery({
       queryKey: usersKeys.all,
       queryFn: getUsers,
-      staleTime: 60_000, // 1 min; ajusta a tu gusto
+      staleTime: 60_000,
     });
   }
   
@@ -29,7 +29,7 @@ import {
     return useQuery({
       queryKey: usersKeys.detail(id),
       queryFn: () => getUserById(id),
-      enabled: !!id && enabled, // evita la llamada con id falsy
+      enabled: !!id && enabled, //  solo se ejecuta si id es verdadero
     });
   }
   
@@ -40,7 +40,6 @@ import {
     return useMutation({
       mutationFn: createUser,
       onSuccess: () => {
-       
         qc.invalidateQueries({ queryKey: usersKeys.all });
       },
     });
@@ -69,7 +68,7 @@ import {
     const qc = useQueryClient();
   
     return useMutation({
-      mutationFn: deleteUser, // recibe directamente el id
+      mutationFn: deleteUser,
       onSuccess: () => {
         qc.invalidateQueries({ queryKey: usersKeys.all });
       },

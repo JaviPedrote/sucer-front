@@ -15,7 +15,7 @@ const UserCard = memo(({ user, askDelete, askEdit }) => (
     <div className="flex justify-between">
       <p><strong>Rol:</strong> <span className="capitalize">{user.role.slug}</span></p>
       {user.role_id !== 1 && (
-        <button onClick={() => askDelete(user.id)} className="absolute right-1 bottom-1 rounded-br-lg rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white hover:bg-red-700">
+        <button onClick={() => askDelete(user)} className="absolute right-1 bottom-1 rounded-br-lg rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white hover:bg-red-700">
           <RiDeleteBin2Fill className="h-7 w-5" />
         </button>
       )}

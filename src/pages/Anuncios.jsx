@@ -16,6 +16,7 @@ const categories = {
 export function Anuncios() {
   const [selected, setSelected] = useState(categories[0]);
   const { data, error, isLoading } = usePosts();
+  
 
 
 
@@ -72,7 +73,7 @@ export function Anuncios() {
       </header>
 
       {/* Grid de anuncios */}
-      <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 p-2">
         {filtered?.map(a => {
           const cat = categories[a.category.id];
           return (

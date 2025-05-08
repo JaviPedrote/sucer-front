@@ -5,7 +5,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ThemeToggle } from '../components/ThemeToogle';
 import { motion } from 'framer-motion';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const navLinks = [
   { name: 'Dashboard', path: '/dashboard' },
@@ -16,6 +16,9 @@ export default function Layout() {
   const { user, logoutUser } = useContext(AuthContext);
   const { pathname } = useLocation();
 
+  const closeMobileNav = () => {
+    console.log('funcion mobile');
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br 
@@ -46,7 +49,7 @@ export default function Layout() {
                     {l.name}
                   </Link>
                 ))}
-                <ThemeToggle  />
+                <ThemeToggle  closeMobileNav={closeMobileNav}/>
                 <button
                   onClick={logoutUser}
                   className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-700 focus-visible:outline-red-600"

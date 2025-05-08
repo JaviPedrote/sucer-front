@@ -1,7 +1,7 @@
-// src/services/postServices.js
 import { api } from "./axios";
 
 export async function getPosts() {
+  
   try {
     const { data } = await api.get('/announcements');
     return data;
@@ -14,7 +14,7 @@ export async function getPosts() {
 export async function getPostById(id) {
   try {
     const { data } = await api.get(`/announcements/${id}`);
-    return data;          
+    return data;
   } catch (error) {
     console.error('Error fetching post by id:', error);
     throw error;

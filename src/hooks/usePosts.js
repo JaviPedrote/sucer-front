@@ -37,17 +37,16 @@ export function usePost(id) {
  */
 export function useCreatePost() {
   const qc = useQueryClient()
-  return useMutation(
-    async (newPost) => {
-      const response = await createPost(newPost);
-      return response;
-    },
-    {
+
+  return useMutation({
+    mutationFn:createPost,
       onSuccess: () => {
         qc.invalidateQueries(['posts'])
       },
-    }
-  )
+      onError: (err) => {
+        console.error(err)
+      },
+  })
 }
 
 /**
@@ -55,14 +54,19 @@ export function useCreatePost() {
  */
 export function useUpdatePost() {
   const qc = useQueryClient()
-  return useMutation(
-    ({ id, data }) => updatePost(id, data),
-    {
-      onSuccess: (_data, variables) => {
-        qc.invalidateQueries(['posts'])
-        qc.invalidateQueries(['posts', variables.id])
-      },
-    }
+
+  return useMutation({
+    mutationFn: ({ id, data }) => {
+      return updatePost(id, data)
+    },
+    onSuccess: (_res, { id }) => {
+      qc.invalidateQueries(['posts'])
+      qc.invalidateQueries(['posts', id])
+    },
+    onError: (err) => {
+      console.error(err)
+    },
+  }
   )
 }
 
@@ -71,12 +75,11 @@ export function useUpdatePost() {
  */
 export function useDeletePost() {
   const qc = useQueryClient()
-  return useMutation(
-    (id) => deletePost(id),
-    {
-      onSuccess: () => {
-        qc.invalidateQueries(['posts'])
-      },
-    }
-  )
+
+  return useMutation({
+    mutationFn:deletePost,
+    onSuccess: () => {
+      qc.invalidateQueries(['posts'])
+    },
+})
 }

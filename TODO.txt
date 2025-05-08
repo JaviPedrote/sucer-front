@@ -1,3 +1,4 @@
 
-Componentes gestionar post y ver su funcionamiento.
+gestion categorias
+cargar soilo anuncios escritos por el mism. Menos admin que los gestiona todos
 cambiar color dasboard,pequeño color claro y mas md oscuro
