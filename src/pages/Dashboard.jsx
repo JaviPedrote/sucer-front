@@ -11,9 +11,10 @@ import Sheet from '../components/users/SheetUser';
 import { useDeletePost, usePosts } from '../hooks/usePosts';
 import { PostCard } from '../components/post/PostCard';
 import SheetPost from '../components/post/SheetPost';
-import { getCategories } from '../services/categoriesServices';
+import { createCategory, getCategories,deleteCategories,updateCategories } from '../services/categoriesServices';
 import { MdPostAdd } from "react-icons/md";
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Dashboard() {
@@ -29,11 +30,16 @@ export default function Dashboard() {
   const [modalCategories, setModalCategories] = useState(false);
   const [categories, setCategories] = useState([]);
   const [modalAddCategories, setModalAddCategories] = useState(false);
+  const [nameCategory, setNameCategory] = useState();
+  const [categoryId, setCategoryId] = useState(null);
+
+
 
   const { user } = useContext(AuthContext);
   const isAdmin = user.role_id === 1;
   const isTutor = user.role_id === 2;
 
+  const navigate = useNavigate();
 
   // UseEffect para manejar el scroll del body
   useEffect(() => {
@@ -101,6 +107,11 @@ export default function Dashboard() {
     toast.info('Borrando anuncio...');
   };
 
+   const handleChange = e => {
+  setNameCategory(e.target.value);
+};
+
+
   // Fetching data categporias
   useEffect(() => {
     async function fetchCategories() {
@@ -108,12 +119,49 @@ export default function Dashboard() {
       setCategories(data);
     }
     fetchCategories();
-  }, []);
+  }, [modalAddCategories,modalCategories]);
 
   const addCategories = () => {
-    
+     const response = createCategory({ name: nameCategory });
+    if (response.status !== 201) {
     toast.success('Categoría añadida correctamente');
     setModalAddCategories(false);
+    setNameCategory('');
+    }else{
+      toast.error('Error al añadir la categoría');
+    }
+  }
+
+  const deleteCategory = (id) => {
+    if (!id) return;
+    // alert preguntando si quiuere eliminar la categoria
+    const confirm = window.confirm(`¿Estás seguro de que quieres eliminar la categoría con ID: ${id}?`);
+    if (!confirm) return;
+    deleteCategories(id);
+    toast.success('Categoría eliminada correctamente');
+    setModalCategories(false);
+    setNameCategory('');
+  }
+
+  const editing = (id) => {
+    const category = categories.find(cat => cat.id === id);
+    setCategoryId(id);
+    if (!category) return;
+    setNameCategory(category.name);
+    setModalAddCategories(true);
+  }
+
+  const updateCategory = async(id) => {
+    const response = await updateCategories( id , {name: nameCategory });
+    console.log(response);
+    if (response.success) {
+      toast.success('Categoría editada correctamente');
+      setModalAddCategories(false);
+      setNameCategory('');
+      setCategoryId(null);
+    } else {
+      toast.error('Error al editar la categoría');
+    }
   }
 
   const cardsUsuarios = [
@@ -363,13 +411,13 @@ export default function Dashboard() {
                 <p className="mb-4 text-sm font-semibold">Categorias existentes</p>
                 <button onClick={() => setModalAddCategories(true)} className="rounded-lg border px-1.5 py-0.5 bg-slate-200 hover:bg-slate-50 dark:text-primary-900 dark:border-slate-400 dark:hover:bg-slate-500"><MdPostAdd /></button>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-2 overflow-y-auto max-h-80">
                 {categories.map(cat => (
                   <li key={cat.id} className="flex justify-between items-center bg-slate-100 dark:bg-slate-700 p-2 rounded-lg">
                     <span>{cat.name}</span>
                     <div className='flex gap-2'>
-                      <button className='rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700' >Editar</button>
-                      <button className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Eliminar</button>
+                      <button className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700" onClick={()=>{deleteCategory(cat.id)}}>Eliminar</button>
+                      <button className='rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700'  onClick={()=>{editing(cat.id)}}>Editar</button>
                     </div>
                   </li>
                 ))}
@@ -380,9 +428,11 @@ export default function Dashboard() {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md px-4">
               <div className="w-full max-w-sm rounded-xl bg-white dark:text-primary-50 p-6 shadow-lg dark:bg-slate-800 ">
                 <h3 className="mb-4 text-lg font-semibold">Añadir categoria</h3>
-                <input type="text" placeholder="Nombre de la categoria" className="w-full border border-gray-300 rounded-md p-2 mb-4" />
+                <input type="text" name='nameCategory' onChange={handleChange} value={nameCategory}  placeholder="Nombre de la categoria" className="w-full border border-gray-300 rounded-md p-2 mb-4" />
                 <div className='flex justify-end gap-3'>
-                  <button onClick={addCategories} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Añadir</button>
+                  {categoryId !== null ? (<button onClick={()=>updateCategory(categoryId)} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" >Editar</button>) : (<button onClick={addCategories} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" >Añadir</button>)
+                  }
+
                   <button onClick={() => setModalAddCategories(false)} className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">Cancelar</button>
                 </div>
               </div>
