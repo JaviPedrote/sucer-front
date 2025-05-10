@@ -37,7 +37,6 @@ export default function Dashboard() {
 
   const { user } = useContext(AuthContext);
   const isAdmin = user.role_id === 1;
-  const isTutor = user.role_id === 2;
 
   const navigate = useNavigate();
 
@@ -72,6 +71,8 @@ export default function Dashboard() {
   const anuncios = data?.data ?? []
   const askDeletePost = (p) => { setSelectedPost(p); setConfirmDeletePost(true); };
   const askEditPost = (p) => { setSheetNewPost(true); setSelectedPost(p); };
+
+  console.log('anuncios', anuncios);
 
   const handleDelete = () => {
     if (!userToDelete) return;
@@ -132,12 +133,12 @@ export default function Dashboard() {
     }
   }
 
-  const deleteCategory = (id) => {
-    if (!id) return;
+  const deleteCategory = (cat) => {
+    if (!cat) return;
     // alert preguntando si quiuere eliminar la categoria
-    const confirm = window.confirm(`¿Estás seguro de que quieres eliminar la categoría con ID: ${id}?`);
+    const confirm = window.confirm(`¿Estás seguro de que quieres eliminar la categoría: ${cat.name}?`);
     if (!confirm) return;
-    deleteCategories(id);
+    deleteCategories(cat.id);
     toast.success('Categoría eliminada correctamente');
     setModalCategories(false);
     setNameCategory('');
@@ -266,7 +267,7 @@ export default function Dashboard() {
                       <td className="py-2 px-4">{a.id}</td>
                       <td className="py-2 px-4">{a.title}</td>
                       <td className="py-2 px-4">{a.content}</td>
-                      <td className="py-2 px-4 capitalize">{a.category.name}</td>
+                      <td className="py-2 px-4 capitalize">{a?.category?.name}</td>
                       <td className="py-2 px-4">
                         {a.role_id !== 1 && (
                           <div className="flex gap-2">
@@ -342,9 +343,9 @@ export default function Dashboard() {
             </div>
 
             {/* Desktop: tabla */}
-            <div className="hidden overflow-x-auto md:block">
+            <div className="hidden overflow-x-auto md:block ">
               <table className="w-full text-left text-sm">
-                <thead className="bg-brand-600 text-white">
+                <thead className="bg-brand-600 dark:text-white">
                   <tr>
                     <th className="py-2 px-4">ID</th>
                     <th className="py-2 px-4">Nombre</th>
@@ -361,7 +362,7 @@ export default function Dashboard() {
                       <td className="py-2 px-4">{u.email}</td>
                       <td className="py-2 px-4 capitalize">{u.role.slug}</td>
                       <td className="py-2 px-4">
-                        {u.role_id !== 1 && (
+                        {(u.role_id !== 1 || u.id !== 1 ) && (
                           <div className="flex gap-2">
                             <button onClick={() => askDelete(u)} className="rounded bg-red-600 px-4 py-1  font-semibold text-white hover:bg-red-700">
                               Borrar
@@ -392,7 +393,7 @@ export default function Dashboard() {
             )}
 
             {/* Ssheet create update users */}
-            <AnimatePresence>{modalSheetOpen && <Sheet openSheetUser={setModalSheetOpen} user={selectedUser} />}</AnimatePresence>
+            <AnimatePresence>{modalSheetOpen && <Sheet openSheetUser={setModalSheetOpen} user={selectedUser}  users={users} />}</AnimatePresence>
           </div>
         </>
       )}
@@ -415,10 +416,13 @@ export default function Dashboard() {
                 {categories.map(cat => (
                   <li key={cat.id} className="flex justify-between items-center bg-slate-100 dark:bg-slate-700 p-2 rounded-lg">
                     <span>{cat.name}</span>
-                    <div className='flex gap-2'>
-                      <button className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700" onClick={()=>{deleteCategory(cat.id)}}>Eliminar</button>
-                      <button className='rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700'  onClick={()=>{editing(cat.id)}}>Editar</button>
+                    { user.role_id === 1 && (
+                      <div className='flex gap-2'>
+                      <button className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700" onClick={()=>{deleteCategory(cat)}}>Eliminar</button>
+                      <button className='roundeºd bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700'  onClick={()=>{editing(cat.id)}}>Editar</button>
                     </div>
+                    )}
+                    
                   </li>
                 ))}
               </ul>

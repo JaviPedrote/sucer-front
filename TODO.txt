@@ -1,4 +1,8 @@
 
-gestion categorias
-cargar soilo anuncios escritos por el mism. Menos admin que los gestiona todos
+
+que un tutor no pueda borrar mensajes del admin
+que users no pueda entrar en el dashboard
+
+-------------------FUTURO---------------------
+AÑADIR FECHA VENCIMIENTO A LOS POST
 cambiar color dasboard,pequeño color claro y mas md oscuro

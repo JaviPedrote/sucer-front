@@ -13,7 +13,7 @@ const navLinks = [
 ];
 
 export default function Layout() {
-  const { logoutUser } = useContext(AuthContext);
+  const { logoutUser,user } = useContext(AuthContext);
   const { pathname } = useLocation();
 
   const closeMobileNav = () => {
@@ -37,19 +37,22 @@ export default function Layout() {
 
               {/* Desktop Nav */}
               <div className="hidden md:flex md:items-center md:gap-8">
+                 {/* <p className="text-sm font-normal text-slate-500 dark:text-slate-400 mr-5">
+                      {user?.email}
+                  </p> */}
                 {navLinks.map(l => (
                   <Link
                     key={l.name}
                     to={l.path}
                     className={`text-sm font-medium transition ${pathname.startsWith(l.path)
-                        ? 'bg-brand-600/10 text-brand-700 dark:bg-brand-400/10 dark:text-white dark:hover:bg-brand-400/20 scale-120'
-                        : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+                      ? 'bg-brand-600/10 text-brand-700 dark:bg-brand-400/10 dark:text-white dark:hover:bg-brand-400/20 scale-120'
+                      : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
                       }`}
                   >
                     {l.name}
                   </Link>
                 ))}
-                <ThemeToggle  closeMobileNav={closeMobileNav}/>
+                <ThemeToggle closeMobileNav={closeMobileNav} />
                 <button
                   onClick={logoutUser}
                   className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-700 focus-visible:outline-red-600"
@@ -60,7 +63,15 @@ export default function Layout() {
 
               {/* Botón hamburguesa móvil */}
               <Disclosure.Button className="md:hidden dark:bg-slate-600 rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-600">
-                {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+                {open ?
+                  <div className='flex items-center gap-2'>
+                    {/* <p className="text-sm font-normal text-slate-500 dark:text-slate-400 mr-5">
+                      {user?.email}
+                    </p> */}
+                    <XMarkIcon className="h-6 w-6" />
+                  </div>
+
+                  : <Bars3Icon className="h-6 w-6" />}
               </Disclosure.Button>
             </div>
 
@@ -110,7 +121,7 @@ export default function Layout() {
 }
 
 // Componente para el menú de navegación móvil
-function MobileNav({ navLinks, pathname, logoutUser,closeMobileNav }) {
+function MobileNav({ navLinks, pathname, logoutUser, closeMobileNav }) {
 
   const navRef = useRef(null);
 
@@ -127,7 +138,7 @@ function MobileNav({ navLinks, pathname, logoutUser,closeMobileNav }) {
 
 
   return (
-    <div ref={navRef}  className="space-y-1 px-4 pb-4 pt-2">
+    <div ref={navRef} className="space-y-1 px-4 pb-4 pt-2">
       <div className="flex items-center gap-2">
         <ThemeToggle closeMobileNav={closeMobileNav} className="w-10 h-10" />
         {navLinks.map(l => (
@@ -136,8 +147,8 @@ function MobileNav({ navLinks, pathname, logoutUser,closeMobileNav }) {
             to={l.path}
             onClick={closeMobileNav}
             className={`rounded-lg px-3 py-2 text-base font-medium ml-2 transition ${pathname.startsWith(l.path)
-                ? 'text-amber-500 scale-115'
-                : 'text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
+              ? 'text-amber-500 scale-115'
+              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
               }`}
           >
             {l.name}
