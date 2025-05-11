@@ -30,13 +30,12 @@ export default function Login() {
   }
 
   return (
-    /* ------------------------------------ Fondo global ------------------------------------ */
     <main className="
         grid min-h-screen -mt-8 sm:mt-0 place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
         dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-900
       ">
 
-      {/* “Panel” diagonal – solo en claro */}
+      
       <div aria-hidden
         className="pointer-events-none fixed inset-y-0 left-0 w-1/2 origin-top-left -skew-x-12
                       shadow-xl blur-sm
@@ -54,7 +53,6 @@ export default function Login() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: .45 }}
       >
-        {/* Cabeza de color (solo claro) */}
         <header className="
             flex flex-col items-center gap-3 px-10 pb-0 sm:pb-8 pt-10
             
@@ -66,8 +64,6 @@ export default function Login() {
           </p>
         </header>
 
-        {/* ------------------------------------ Formulario ------------------------------------ */}
-        {/* //todo:Porque las letras del inpus soin blancas en el modo oscuro */}
         <form onSubmit={handleSubmit} className="space-y-6 px-10 pb-10 pt-8">
         
 
@@ -91,7 +87,7 @@ export default function Login() {
           <button
             type="submit" disabled={loading}
             className="
-              w-full rounded-lg bg-secondary-500 hover:bg-secondary-400 py-3 text-primary-700 font-semibold dark:text-white shadow-md transition
+              w-full rounded-lg bg-secondary-700 hover:bg-secondary-500 py-3 text-primary-700 font-semibold dark:text-white shadow-md transition
               active:scale-95 disabled:opacity-60 dark:bg-amber-500 dark:hover:bg-amber-600
             ">
             {loading ? 'Iniciando sesion...' : 'Entrar'}

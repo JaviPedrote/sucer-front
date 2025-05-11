@@ -2,6 +2,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AcademicCapIcon, BellAlertIcon, ChartPieIcon } from '@heroicons/react/24/solid';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 
 
 const features = [
@@ -30,6 +32,10 @@ const fadeIn = {
 
 export function Home() {
   const user = JSON.parse(sessionStorage.getItem('user'));
+
+  const { user: userAuth } = useContext(AuthContext);
+  const isUser = userAuth?.role_id === 3;
+  
 
   return (
     <section className="relative isolate overflow-hidden">
@@ -60,14 +66,18 @@ export function Home() {
           El tablón digital que conecta estudiantes, profesorado y familias en un solo lugar.
         </p>
 
-      
+
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <PrimaryButton as={Link} to="/anuncios">
             Ver anuncios
           </PrimaryButton>
-          <PrimaryButton as={Link} to="/dashboard">
-            Ir al dashboard
-          </PrimaryButton>
+          {!isUser &&
+            <PrimaryButton as={Link} to="/dashboard">
+              Ir al dashboard
+            </PrimaryButton>
+          }
+
+
         </div>
       </motion.div>
 

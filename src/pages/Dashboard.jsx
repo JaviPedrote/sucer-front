@@ -37,6 +37,9 @@ export default function Dashboard() {
 
   const { user } = useContext(AuthContext);
   const isAdmin = user.role_id === 1;
+  const isUser = user.role_id === 3;
+
+ 
 
   const navigate = useNavigate();
 
@@ -56,6 +59,12 @@ export default function Dashboard() {
     if (!sheetNewPost) setSelectedPost(null);
   }, [sheetNewPost]);
 
+  useEffect(() => {
+    if (isUser) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
 
   {/* Fetching datos de usuario */ }
   const { data: users, isLoading } = useUsersQuery();
@@ -72,7 +81,7 @@ export default function Dashboard() {
   const askDeletePost = (p) => { setSelectedPost(p); setConfirmDeletePost(true); };
   const askEditPost = (p) => { setSheetNewPost(true); setSelectedPost(p); };
 
-  console.log('anuncios', anuncios);
+ 
 
   const handleDelete = () => {
     if (!userToDelete) return;
@@ -107,10 +116,12 @@ export default function Dashboard() {
     });
     toast.info('Borrando anuncio...');
   };
-
+  
+  
    const handleChange = e => {
   setNameCategory(e.target.value);
 };
+
 
 
   // Fetching data categporias
@@ -154,7 +165,6 @@ export default function Dashboard() {
 
   const updateCategory = async(id) => {
     const response = await updateCategories( id , {name: nameCategory });
-    console.log(response);
     if (response.success) {
       toast.success('Categoría editada correctamente');
       setModalAddCategories(false);
@@ -165,19 +175,25 @@ export default function Dashboard() {
     }
   }
 
+  const tutores = users?.filter(user => user.role_id === 2);
+  const alumnos = users?.filter(user => user.role_id === 3);
+
   const cardsUsuarios = [
-    { title: 'Tutores', value: stats.total, icon: ChartBarIcon, color: 'text-blue-500' },
-    { title: 'Alumnos', value: stats.alumnos, icon: ChartBarIcon, color: 'text-purple-500' },
-    { title: 'Usuarios', value: stats.categorias, icon: TagIcon, color: 'text-red-500' }
+    { title: 'Tutores', value: tutores?.length, icon: ChartBarIcon, color: 'text-blue-500' },
+    { title: 'Alumnos', value: alumnos?.length, icon: ChartBarIcon, color: 'text-purple-500' },
+    { title: 'Usuarios', value: users?.length, icon: TagIcon, color: 'text-red-500' }
   ];
 
+  console.log(data)
+
   const cardsAnuncios = [
-    { title: 'Anuncios', value: stats.total, icon: ChartBarIcon, color: 'text-blue-500' },
-    { title: 'Categorias', value: '4', icon: StarIcon, color: 'text-amber-500' },
-    { title: 'Anuncios', value: '4', icon: TagIcon, color: 'text-red-500' }
+    { title: 'Anuncios', value: data?.data?.length, icon: ChartBarIcon, color: 'text-blue-500' },
+    { title: 'Categorias', value: categories?.length, icon: StarIcon, color: 'text-amber-500' },
+    { title: 'De Administrador', value: '4', icon: TagIcon, color: 'text-red-500' }
   ]
 
-
+// Ahora `tutores` contendrá solo los objetos con role_id === 2
+console.log(tutores);
 
 
   if (isLoading) return <p className="text-center text-lg font-semibold dark:text-white">Cargando...</p>;
@@ -269,7 +285,7 @@ export default function Dashboard() {
                       <td className="py-2 px-4">{a.content}</td>
                       <td className="py-2 px-4 capitalize">{a?.category?.name}</td>
                       <td className="py-2 px-4">
-                        {a.role_id !== 1 && (
+                        {a?.user?.id !== 1 && (
                           <div className="flex gap-2">
                             <button onClick={() => askDeletePost(a)} className="rounded bg-red-600 px-4 py-1  font-semibold text-white hover:bg-red-700">
                               Borrar
@@ -320,13 +336,13 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.35 }}
-                className="relative rounded-xl md:rounded-3xl bg-white pl-5 py-3 md:px-6 md:py-6 bg-gradient-to-tl shadow-2xl from-white to-secondary-100 dark:from-slate-800  dark:to-slate-700 md:dark:to-slate-800 dark:bg-slate-800/50 outline outline-amber-600/40 dark:outline-primary-700"
+                className="relative rounded-xl md:rounded-3xl bg-white py-2 md:px-6 md:py-4 bg-gradient-to-tl shadow-2xl from-white to-secondary-100 dark:from-slate-800  dark:to-slate-700 md:dark:to-slate-800 dark:bg-slate-800/50 outline outline-amber-600/40 dark:outline-primary-700"
               >
-                <p>
-                  <Icon className={`md:h-8 md:w-8 h-5 w-5 ${color} mb-4`} />
-                </p>
-                <h3 className="md:text-lg font-semibold text-primary-900 dark:text-white">{title}</h3>
-                <p className={`absolute md:static top-1.5 right-6 mt-1 text-xl md:text-3xl font-bold ${color}`}>{value}</p>
+                <Icon className={`md:h-8 md:w-8 h-5 w-5 ${color} mb-4 ml-2`} />
+                <div className="flex flex-row justify-between ">
+                  <h3 className=" text-sm sm:text-lg font-semibold text-primary-900 dark:text-white mx-auto md:mx-0">{title}</h3>
+                  <p className={`absolute md:static top-0.5 right-3 mt-1  md:-mt-1 text-xl md:text-3xl font-bold ${color}`}>{value}</p>
+                </div>
               </motion.div>
             ))}
           </div>

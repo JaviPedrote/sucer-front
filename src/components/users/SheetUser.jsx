@@ -12,10 +12,6 @@ const Sheet = memo(({ openSheetUser, user, users }) => {
 
   const tutors = users?.filter(user => user.role_id === 2);
 
-  console.log('tutors',tutors)
-
-  console.log('users',users)
-
   useEffect(() => {
     if (user) {
       setFormData({ name: user.name, email: user.email, password: '', role_id: user.role_id ,tutor_id: user.tutor_id });

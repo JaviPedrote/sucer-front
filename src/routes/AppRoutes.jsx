@@ -13,6 +13,9 @@ function PrivateRoute({ children }) {
 }
 
 export default function AppRoutes() {
+  const { user } = useContext(AuthContext);
+  const isUser = user?.role_id === 3;
+
   return (
     <BrowserRouter>
       <Routes>
@@ -24,8 +27,14 @@ export default function AppRoutes() {
         }
         >
           <Route path="home" element={<Home />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         
-          <Route path="dashboard" element={<Dashboard />} />
+          {!isUser ? (
+            <Route path="dashboard" element={<Dashboard />} /> 
+          ):(
+            <Route path="dashboard" element={<Navigate to="/home" replace />} />
+          )
+          }
 
           <Route path="anuncios" element={<Anuncios />} />
 
