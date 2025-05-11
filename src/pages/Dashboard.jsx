@@ -192,8 +192,7 @@ export default function Dashboard() {
     { title: 'De Administrador', value: '4', icon: TagIcon, color: 'text-red-500' }
   ]
 
-// Ahora `tutores` contendrá solo los objetos con role_id === 2
-console.log(tutores);
+// Ahora `tutores` contendrá solo los objetos con role_id === 
 
 
   if (isLoading) return <p className="text-center text-lg font-semibold dark:text-white">Cargando...</p>;
