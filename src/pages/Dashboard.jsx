@@ -197,7 +197,6 @@ export default function Dashboard() {
 
   if (isLoading) return <p className="text-center text-lg font-semibold dark:text-white">Cargando...</p>;
   if (!users?.length) return <p className="text-center text-lg font-semibold dark:text-white">No hay usuarios</p>;
-  if (!categories.length) return <p className="text-center text-lg font-semibold dark:text-white">Cargando Categorias</p>;
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-10 mt-4 md:mt-0 space-y-6 md:space-y-10">
