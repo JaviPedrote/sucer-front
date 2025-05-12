@@ -14,11 +14,11 @@ const navLinks = [
 ];
 
 export default function Layout() {
-  const { logoutUser,user } = useContext(AuthContext);
+  const { logoutUser, user } = useContext(AuthContext);
   const { pathname } = useLocation();
 
   const isUser = user?.role_id === 3;
- 
+
 
   const closeMobileNav = () => {
     console.log('');
@@ -39,11 +39,11 @@ export default function Layout() {
                 Sucer
               </Link>
 
-              
+
 
               {/* Desktop Nav */}
               <div className="hidden md:flex md:items-center md:gap-8">
-                 {/* <p className="text-sm font-normal text-slate-500 dark:text-slate-400 mr-5">
+                {/* <p className="text-sm font-normal text-slate-500 dark:text-slate-400 mr-5">
                       {user?.email}
                   </p> */}
                 {navLinks.map(l => (
@@ -151,20 +151,22 @@ function MobileNav({ navLinks, pathname, logoutUser, closeMobileNav }) {
     <div ref={navRef} className="space-y-1 px-4 pb-4">
       <div className="flex items-center gap-2">
         <ThemeToggle closeMobileNav={closeMobileNav} className="w-10 h-10" />
-           {navLinks.map(l => (
-                  (isUser && l.name === 'Dashboard') ? null : (
-                    <Link
-                      key={l.name}
-                      to={l.path}
-                      className={`text-sm font-medium ml-4 transition ${pathname.startsWith(l.path)
-                        ? 'bg-brand-600/10 text-brand-700 dark:bg-brand-400/10 dark:text-white dark:hover:bg-brand-400/20 scale-120'
-                        : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white '
-                        }`}
-                    >
-                      {l.name}
-                    </Link>
-                  )
-                ))}
+        {navLinks.map(l => (
+          (isUser && l.name === 'Dashboard') ? null : (
+            <Link
+              key={l.name}
+              to={l.path}
+              onClick={closeMobileNav} // 👈 aquí cierras el menú al navegar
+              className={`text-sm font-medium ml-4 transition ${pathname.startsWith(l.path)
+                  ? 'bg-brand-600/10 text-brand-700 dark:bg-brand-400/10 dark:text-white dark:hover:bg-brand-400/20 scale-120'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white '
+                }`}
+            >
+              {l.name}
+            </Link>
+          )
+        ))}
+
       </div>
       <div className="mt-3 flex items-center gap-2">
         <button

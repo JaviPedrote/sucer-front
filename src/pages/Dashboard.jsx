@@ -201,11 +201,11 @@ export default function Dashboard() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-10 mt-4 md:mt-0 space-y-6 md:space-y-10">
       <header className={`flex flex-col md:flex-row items-center justify-between`}>
-        <h1 className="text-3xl font-bold text-primary-900 dark:text-white mb-6 md:mb-0">
+        <h1 className="text-3xl font-bold text-primary-900 dark:text-white mb-2 md:mb-0">
           Dashboard
         </h1>
         {isAdmin && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-4 md:mt-0">
             <button
               className="cursor-pointer px-2 py-1 h-12 md:h-8 w-35 md:w-23 bg-gradient-to-b from-blue-500 to-blue-700 dark:from-blue-300 dark:to-blue-500 dark:text-black text-white font-medium rounded-lg hover:bg-gradient-to-t transition-colors"
               onClick={() => setViewUsers(false)}
