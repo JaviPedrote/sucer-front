@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { toast, ToastContainer } from 'react-toastify';
 
 const navLinks = [
+  { name: 'Home', path: '/home' },
   { name: 'Dashboard', path: '/dashboard' },
   { name: 'Anuncios', path: '/anuncios' }
 ];
