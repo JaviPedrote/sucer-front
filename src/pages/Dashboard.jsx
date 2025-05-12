@@ -184,7 +184,6 @@ export default function Dashboard() {
     { title: 'Usuarios', value: users?.length, icon: TagIcon, color: 'text-red-500' }
   ];
 
-  console.log(data)
 
   const cardsAnuncios = [
     { title: 'Anuncios', value: data?.data?.length, icon: ChartBarIcon, color: 'text-blue-500' },
