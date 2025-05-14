@@ -58,7 +58,7 @@ export function Home() {
           [mask-size:200%_100%] [-webkit-mask-size:200%_100%] animate-wipe-x text-5xl font-extrabold">
 
 
-          ¡Hola, {user.name}! Bienvenido a&nbsp; Sucer
+          ¡Hola, {user?.name}! Bienvenido a&nbsp; Sucer
 
         </h1>
 
@@ -82,7 +82,7 @@ export function Home() {
       </motion.div>
 
       {/* FEATURES */}
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 pb-24 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto justify-center grid max-w-6xl grid-cols-1 gap-8 px-6 pb-24 md:grid-cols-3">
         {features.map(({ icon: Icon, title, text }) => (
           <motion.div
             key={title}

@@ -36,12 +36,19 @@ export default function Dashboard() {
 
 
   const { user } = useContext(AuthContext);
-  const isAdmin = user.role_id === 1;
-  const isUser = user.role_id === 3;
+  const isAdmin = user?.role_id === 1;
+  const isUser = user?.role_id === 3;
 
 
 
   const navigate = useNavigate();
+
+  // useEffect para proteger ruta si no hay user
+  useEffect(() => {
+    if (!user) {
+      navigate('/home');
+    }
+  }, [user, navigate]);
 
   // UseEffect para manejar el scroll del body
   useEffect(() => {
