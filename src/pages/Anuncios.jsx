@@ -188,7 +188,7 @@ const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
             </span>
           )}
         </header>
-        <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-15 overflow-hidden">
+        <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-12 overflow-hidden">
           {content}
         </p>
         <footer className="flex items-center justify-between">
@@ -197,7 +197,7 @@ const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
           >
             {category?.name ?? 'Sin categoría'}
           </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-gray-500 dark:text-gray-400 pt-2">
             De {announcement.user?.name ?? 'Anónimo'}
           </span>
         </footer>
