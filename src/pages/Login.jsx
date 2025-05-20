@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <main className="
-        grid min-h-screen -mt-8 sm:mt-0 place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
+        grid min-h-screen -mt-8 sm:mt-0 place-items-center pt-24 md:pt-0 bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
         dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-900
       ">
         <info className="absolute top-0 left-0 z-10 mt-4 ml-4 text-sm font-semibold text-slate-600 dark:text-slate-300">
