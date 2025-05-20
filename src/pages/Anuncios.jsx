@@ -188,7 +188,7 @@ const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
             </span>
           )}
         </header>
-        <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-25 overflow-hidden">
+        <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-18 overflow-hidden">
           {content}
         </p>
         <footer className="mt-4 flex items-center justify-between">

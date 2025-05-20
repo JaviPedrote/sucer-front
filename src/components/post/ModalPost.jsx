@@ -112,7 +112,7 @@ const ModalPost = ({ open, onClose, announcement }) => {
                 {announcement.title}
               </h2>
             </div>
-            <p className="text-base text-gray-200 dark:text-gray-200 my-6">
+            <p className="text-base text-gray-200 dark:text-gray-200 my-6 mr-4">
               {announcement.content}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
