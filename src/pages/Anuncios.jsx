@@ -191,13 +191,13 @@ const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
         <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-12 overflow-hidden">
           {content}
         </p>
-        <footer className="flex items-center justify-between">
+        <footer className="flex items-center justify-between pt-2">
           <span
             className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${badgeClasses}`}
           >
             {category?.name ?? 'Sin categoría'}
           </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400 pt-2">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
             De {announcement.user?.name ?? 'Anónimo'}
           </span>
         </footer>
