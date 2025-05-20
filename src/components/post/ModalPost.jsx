@@ -117,16 +117,18 @@ const ModalPost = ({ open, onClose, announcement }) => {
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
             </p>
-            <info className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-             De {announcement.user?.name} , escrito el dia  {new Date(announcement.created_at).toLocaleDateString("es-ES", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })}
-              <span className="absolute bottom-4.5 right-5">Categoria: <span className="text-blue-50">{announcement.category?.name}</span>
-</span>
+            <info className="text-sm text-gray-500 dark:text-gray-400 mb-2 flex flex-col">
+              <div>
+                De {announcement.user?.name} , escrito el dia  {new Date(announcement.created_at).toLocaleDateString("es-ES", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}
+              </div>
+              <div className="">Categoria: <span className="text-blue-50">{announcement.category?.name}</span>
+              </div>
             </info>
-           
+
           </motion.div>
         </motion.div>
       )}
