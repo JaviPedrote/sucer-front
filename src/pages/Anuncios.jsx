@@ -1,13 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { Fragment, useEffect, useState, useMemo, memo } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { usePosts } from '../hooks/usePosts';
 import { getCategories } from '../services/categoriesServices';
+import ModalPost from '../components/post/ModalPost';
 
 const ALL = { id: null, name: 'Todas' };
 
 export function Anuncios() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+
   const [categories, setCategories] = useState([ALL]);
   const [selected, setSelected] = useState(ALL);
   const { data } = usePosts();
@@ -33,6 +38,20 @@ export function Anuncios() {
     [anuncios, selected]
   );
 
+  // Función para abrir el modal con un anuncio específico
+  const handleOpenModal = (announcement) => {
+    setSelectedAnnouncement(announcement);
+    setModalOpen(true);
+    console.log('selectedAnnouncement', announcement);
+  };
+
+  // Función para cerrar el modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedAnnouncement(null);
+  };
+
+  console.log('filtered', filtered);
   return (
     <section
       aria-labelledby="anuncios-title"
@@ -55,7 +74,16 @@ export function Anuncios() {
       <AnnouncementGrid
         filtered={filtered}
         categoriesById={categoriesById}
+        onAnnouncementClick={handleOpenModal}
       />
+
+      {modalOpen && selectedAnnouncement && (
+        <ModalPost
+          open={modalOpen}
+          onClose={handleCloseModal}
+          announcement={selectedAnnouncement}
+        />
+      )}
     </section>
   );
 }
@@ -82,18 +110,16 @@ function CategorySelector({ categories, selected, onChange }) {
                 key={cat.id ?? 'all'}
                 value={cat}
                 className={({ active }) =>
-                  `cursor-pointer select-none py-2 pl-3 pr-9 ${
-                    active
-                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                      : 'text-gray-700 dark:text-gray-200'
+                  `cursor-pointer select-none py-2 pl-3 pr-9 ${active
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                    : 'text-gray-700 dark:text-gray-200'
                   }`
                 }
               >
                 {({ selected }) => (
                   <span
-                    className={`block truncate ${
-                      selected ? 'font-medium' : 'font-normal'
-                    }`}
+                    className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                      }`}
                   >
                     {cat.name}
                   </span>
@@ -107,27 +133,28 @@ function CategorySelector({ categories, selected, onChange }) {
   );
 }
 
-const AnnouncementGrid = memo(({ filtered, categoriesById }) => (
-  <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 p-2">
+const AnnouncementGrid = memo(({ filtered, categoriesById, onAnnouncementClick }) => (
+  <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 px-0 p-2">
     {filtered.map(item => (
       <AnnouncementCard
         key={item.id}
         announcement={item}
         category={categoriesById[item.category?.id]}
+        onClick={() => onAnnouncementClick(item)}
       />
     ))}
   </ul>
 ));
 
-const AnnouncementCard = memo(({ announcement, category }) => {
+const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
   const { title, content, urgent } = announcement;
   const badgeClasses = category?.badge
     ? `${category.badge} dark:bg-opacity-20`
     : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300';
 
-  const handleAction = () => {
-    if (urgent) toast.warn('¡Este anuncio es urgente!');
-  };
+  // const handleAction = () => {
+  //   if (urgent) toast.warn('¡Este anuncio es urgente!');
+  // };
 
   return (
     <motion.li
@@ -140,10 +167,10 @@ const AnnouncementCard = memo(({ announcement, category }) => {
       <article
         role="button"
         tabIndex={0}
-        onClick={handleAction}
-        onKeyDown={e =>
-          (e.key === 'Enter' || e.key === ' ') && handleAction()
-        }
+        onClick={onClick}
+       onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') onClick();
+        }}
         className="
           flex flex-col h-full rounded-xl border border-gray-200
           bg-white p-6 shadow-sm transition-shadow hover:shadow-md
@@ -164,11 +191,14 @@ const AnnouncementCard = memo(({ announcement, category }) => {
         <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line">
           {content}
         </p>
-        <footer className="mt-4">
+        <footer className="mt-4 flex items-center justify-between">
           <span
             className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${badgeClasses}`}
           >
             {category?.name ?? 'Sin categoría'}
+          </span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            De {announcement.user?.name ?? 'Anónimo'}
           </span>
         </footer>
       </article>
