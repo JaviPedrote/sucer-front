@@ -108,7 +108,7 @@ const ModalPost = ({ open, onClose, announcement }) => {
               >
                 <RiCloseFill className="h-6 w-6" />
               </button>
-              <h2 className="text-lg font-bold text-gray-800 dark:text-gray-50 mb-2">
+              <h2 className="text-base font-bold text-gray-800 dark:text-gray-50 mb-2">
                 {announcement.title}
               </h2>
             </div>
