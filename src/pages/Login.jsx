@@ -34,7 +34,18 @@ export default function Login() {
         grid min-h-screen -mt-8 sm:mt-0 place-items-center bg-gradient-to-br from-secondary-200 via-secondary-900 to-secondary-200 px-4
         dark:bg-gradient-to-br dark:from-primary-800 dark:via-primary-900 dark:to-primary-900
       ">
-
+        <info className="absolute top-0 left-0 z-10 mt-4 ml-4 text-sm font-semibold text-slate-600 dark:text-slate-300">
+        <span className="text-amber-500 dark:text-amber-400">Usuarios de Prueba</span> de Sucer
+        <br />
+        -adminejemplo@gmail.com
+        <br />
+        -tutorejemplo@gmail.com
+        <br />
+        -alumnoejemplo@gmail.com
+        <br />
+        Y la  contraseña de todos es "12345678"
+        <br />
+        </info>
       
       <div aria-hidden
         className="pointer-events-none fixed inset-y-0 left-0 w-1/2 origin-top-left -skew-x-12
