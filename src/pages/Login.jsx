@@ -78,11 +78,11 @@ export default function Login() {
             value={password} onChange={setPassword} placeholder="********"
           />
 
-          <div className="flex justify-end text-xs">
+          {/* <div className="flex justify-end text-xs">
             <a href="#" className="text-brand-600 hover:underline dark:text-amber-400">
               ¿Olvidaste tu contraseña?
             </a>
-          </div>
+          </div> */}
 
           <button
             type="submit" disabled={loading}
@@ -93,12 +93,12 @@ export default function Login() {
             {loading ? 'Iniciando sesion...' : 'Entrar'}
           </button>
 
-          <p className="pt-4 text-center text-xs text-slate-500 dark:text-slate-400">
+          {/* <p className="pt-4 text-center text-xs text-slate-500 dark:text-slate-400">
             ¿Eres nuevo en Sucer?&nbsp;
             <a href="#" className="font-medium text-brand-600 hover:underline dark:text-amber-400">
               Regístrate aquí
             </a>
-          </p>
+          </p> */}
         </form>
       </motion.section>
     </main>
