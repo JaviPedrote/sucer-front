@@ -112,7 +112,7 @@ const ModalPost = ({ open, onClose, announcement }) => {
                 {announcement.title}
               </h2>
             </div>
-            <p className="text-lg text-gray-200 dark:text-gray-200 my-6 mr-4">
+            <p className="text-lg dark:text-gray-200 text-gray-900 my-6 mr-4">
               {announcement.content}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -125,7 +125,7 @@ const ModalPost = ({ open, onClose, announcement }) => {
                   year: "numeric",
                 })}
               </div>
-              <div className="">Categoria: <span className="text-blue-50">{announcement.category?.name}</span>
+              <div className="">Categoria: <span className="dark:text-blue-50 text-blue-500 font-semibold">{announcement.category?.name}</span>
               </div>
             </info>
 
