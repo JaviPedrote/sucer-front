@@ -134,7 +134,7 @@ function CategorySelector({ categories, selected, onChange }) {
 }
 
 const AnnouncementGrid = memo(({ filtered, categoriesById, onAnnouncementClick }) => (
-  <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 px-0 p-2">
+  <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 px-0 p-2">
     {filtered.map(item => (
       <AnnouncementCard
         key={item.id}
@@ -191,7 +191,7 @@ const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
         <p className="flex-grow text-gray-700 dark:text-gray-300 whitespace-pre-line h-12 overflow-hidden">
           {content}
         </p>
-        <footer className="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+        <footer className="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">º
           <span
             className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${badgeClasses}`}
           >
