@@ -16,6 +16,7 @@ export default function Login() {
 
   /* redirect if already logged */
   useEffect(() => { if (user) navigate('/home', { replace: true }); }, [user]);
+const [error, setError] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +26,8 @@ export default function Login() {
       loginUser(u);
       navigate('/home');
     } catch (err) {
-      toast.error(err?.response?.data?.message ?? 'Credenciales incorrectas');
+      setError(err?.response?.data?.message ?? 'Credenciales incorrectas');
+      toast.error(error);
     } finally { setLoading(false); }
   }
 
@@ -76,7 +78,7 @@ export default function Login() {
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6 px-10 pb-10 pt-8">
-        
+        {error && <p className="text-red-500">{error}</p>}
 
           <Field
             id="email" type="email" label="Correo electrónico"

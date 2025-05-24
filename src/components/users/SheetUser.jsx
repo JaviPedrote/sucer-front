@@ -9,6 +9,7 @@ const Sheet = memo(({ openSheetUser, user, users }) => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role_id: '',tutor_id: '', });
   const createUser = useCreateUserMutation();
   const updateUser = useUpdateUserMutation();
+  
 
   const tutors = users?.filter(user => user.role_id === 2);
 
@@ -73,13 +74,11 @@ const Sheet = memo(({ openSheetUser, user, users }) => {
             <label htmlFor="email" className="block text-sm font-medium dark:text-white">Email</label>
             <input id="email" name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring focus:ring-opacity-50 dark:border p-1 pl-2 dark:text-white" />
           </div>
-          {!user && (
             <div>
               <label htmlFor="password" className="block text-sm font-medium dark:text-white">Password</label>
-              <input id="password" name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring focus:ring-opacity-50 dark:border p-1 pl-2 dark:text-white" />
+              {user && <p className="text-small text-gray-500">Si no lo cambias, se mantiene el actual</p>}
+              <input id="password" name="password" type="password" placeholder="********" value={formData.password} onChange={handleChange} className="mt-1 w-full rounded-md border border-gray-300 shadow-sm focus:ring focus:ring-opacity-50 dark:border p-1 pl-2 dark:text-white" />
             </div>
-          )}
-
           {/* select rol */}
           <div>
             <label htmlFor="role_id" className="block text-sm font-medium dark:text-white">Rol</label>
