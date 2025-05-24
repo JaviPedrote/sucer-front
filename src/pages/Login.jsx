@@ -38,7 +38,7 @@ const [error, setError] = useState('');
         <info className="absolute top-0 left-0 z-10 mt-4 ml-4 text-sm font-semibold text-slate-600 dark:text-slate-300">
         <span className="text-amber-500 dark:text-amber-400">Usuarios de Prueba</span> de Sucer
         <br />
-        adminejemplo@gmail.com
+        Puedes probar la aplicación con los siguientes usuarios:
         <br />
         tutorejemplo@gmail.com
         <br />

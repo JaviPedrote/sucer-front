@@ -4,7 +4,7 @@ import { AiFillEdit } from "react-icons/ai";
 
 export const UserCard = memo(({ user, askEdit, askDelete }) => {
   // IDs con privilegios para los que no mostramos botones
-  const protectedIds = [1,46, 36, 37];
+  const protectedIds = [1, 36, 37];
   const canEdit = !protectedIds.includes(user.id);
   const canDelete = !protectedIds.includes(user.id);
 
