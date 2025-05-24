@@ -27,7 +27,6 @@ const [error, setError] = useState('');
       navigate('/home');
     } catch (err) {
       setError(err?.response?.data?.message ?? 'Credenciales incorrectas');
-      toast.error(error);
     } finally { setLoading(false); }
   }
 
