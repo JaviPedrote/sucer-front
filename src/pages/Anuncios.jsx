@@ -42,7 +42,6 @@ export function Anuncios() {
   const handleOpenModal = (announcement) => {
     setSelectedAnnouncement(announcement);
     setModalOpen(true);
-    console.log('selectedAnnouncement', announcement);
   };
 
   // Función para cerrar el modal
@@ -51,7 +50,6 @@ export function Anuncios() {
     setSelectedAnnouncement(null);
   };
 
-  console.log('filtered', filtered);
   return (
     <section
       aria-labelledby="anuncios-title"
@@ -148,8 +146,8 @@ const AnnouncementGrid = memo(({ filtered, categoriesById, onAnnouncementClick }
 
 const AnnouncementCard = memo(({ announcement, category ,onClick}) => {
   const { title, content, urgent } = announcement;
-  const badgeClasses = category?.badge
-    ? `${category.badge} dark:bg-opacity-20`
+  const badgeClasses = category?.name==='Importante'
+    ? `bg-red-600 text-white`
     : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300';
 
   // const handleAction = () => {

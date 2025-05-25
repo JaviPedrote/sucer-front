@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const ModalPost = ({ open, onClose, announcement }) => {
 
-  console.log("ModalPost", announcement);
   // Estado para controlar la animación de salida
   const [isVisible, setIsVisible] = useState(open);
   // Sincronizar el estado visible con la prop open
