@@ -4,12 +4,18 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(),react()],
-   build: {
+  plugins: [tailwindcss(), react()],
+  build: {
     terserOptions: {
       compress: {
         drop_console: true,
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/setupTests.js'],
+    css: true,
   },
 })

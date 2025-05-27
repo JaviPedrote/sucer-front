@@ -384,7 +384,7 @@ export default function Dashboard() {
                       <td className="py-2 px-4">{u.email}</td>
                       <td className="py-2 px-4 capitalize">{u.role.slug}</td>
                       <td className="py-2 px-4">
-                        {![89,98,99].includes(u.id) && (
+                        {![89,98,99,1,2,3].includes(u.id) && (
                           <div className="flex gap-2">
                             <button
                               onClick={() => askDelete(u)}
